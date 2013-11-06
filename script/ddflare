@@ -1,7 +1,5 @@
 #!/usr/bin/perl
 
-package App::DDFlare;
-
 use v5.10;
 
 use warnings FATAL => 'all';
@@ -14,11 +12,7 @@ use Net::DNS::CloudFlare::DDNS;
 
 =head1 NAME
 
-App::DDFlare - A dynamic DNS client for use with CloudFlare
-
-=head1 VERSION
-
-Version 0.04
+ddflare - Command line Dynamic DNS client for CloudFlare
 
 =cut
 
@@ -33,6 +27,8 @@ To run as a daemon simply execute ddflare
 The following flags are accepted
 
     -v     Verbose output
+
+Reads a YAML configuration file from /etc/ddflare.conf
 
 =head1 FUNCTIONS
 

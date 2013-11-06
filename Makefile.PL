@@ -6,8 +6,8 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME             => 'App::DDFlare',
     AUTHOR           => q{Peter Roberts <me+dev@peter-r.co.uk>},
-    VERSION_FROM     => 'script/ddflare',
-    ABSTRACT_FROM    => 'script/ddflare',
+    VERSION_FROM     => 'lib/App/DDFlare.pm',
+    ABSTRACT_FROM    => 'lib/App/DDFlare.pm',
     LICENSE          => 'MIT',
     PL_FILES         => {},
     EXE_FILES        => [ 'script/ddflare' ],

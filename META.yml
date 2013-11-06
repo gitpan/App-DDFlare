@@ -1,7 +1,7 @@
 --- #YAML:1.0
 name:               App-DDFlare
-version:            0.04
-abstract:           A dynamic DNS client for use with CloudFlare
+version:            0.05
+abstract:           Dynamic DNS client for CloudFlare
 author:
     - Peter Roberts <me+dev@peter-r.co.uk>
 license:            MIT
