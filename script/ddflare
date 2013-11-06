@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+package App::DDFlare;
+
 use v5.10;
 
 use warnings FATAL => 'all';
@@ -16,7 +18,11 @@ App::DDFlare - A dynamic DNS client for use with CloudFlare
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
+
+=cut
+
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -32,8 +38,6 @@ The following flags are accepted
 
 =cut
 
-our $VERSION = '0.03';
-
 my %OPTS;
 getopts('v', \%OPTS);
 Readonly my $VERBOSE => $OPTS{v};
@@ -43,15 +47,17 @@ Readonly my $CONFIG_FILE => '/etc/ddflare.conf';
 
 =head2 loadConfig
     
-    Loads in the configuration file, which is YAML, the structure
+Loads in the configuration file, which is YAML, the structure
     is an array of hashrefs.
 
-    The first element being { user => ..., key => ... } which are 
+The first element being { user => ..., key => ... } which are 
     CloudFlare credentials.
 
-    Subsequent elements are { zone => ..., domains => [ ... ] } 
+Subsequent elements are { zone => ..., domains => [ ... ] } 
     which are cloudflare zones, and the subdomains within them to 
     update. An undefined value in domains represents the zone itself.
+
+    loadConfig($PATH_TO_CONFIG);
 
 =cut
 
@@ -64,7 +70,7 @@ sub loadConfig {
 my @conf = loadConfig();
 
 # How long to wait before updates, seconds
-Readonly my $UPDATE_INTERVAL => 1;
+Readonly my $UPDATE_INTERVAL => 300;
 
 Readonly my $updater => Net::DNS::CloudFlare::DDNS->new(
     user => $conf[0]{user},

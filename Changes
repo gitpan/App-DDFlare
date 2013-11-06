@@ -1,5 +1,9 @@
 Revision history for App-DDFlare
 
+0.04    6/11/13
+        Tidy up a bit
+	Add package declaration so metacpan picks this up
+
 0.03    6/11/13
         Split into App::DDFlare
 
@@ -7,5 +11,5 @@ Revision history for App-DDFlare
         Added -v switch
 
 0.01    30/10/13
-       Part of DDFlare
+        Part of DDFlare
 

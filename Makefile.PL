@@ -6,11 +6,11 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME             => 'App::DDFlare',
     AUTHOR           => q{Peter Roberts <me+dev@peter-r.co.uk>},
-    VERSION_FROM     => 'bin/ddflare',
-    ABSTRACT_FROM    => 'bin/ddflare',
+    VERSION_FROM     => 'script/ddflare',
+    ABSTRACT_FROM    => 'script/ddflare',
     LICENSE          => 'MIT',
     PL_FILES         => {},
-    EXE_FILES        => [ 'bin/ddflare' ],
+    EXE_FILES        => [ 'script/ddflare' ],
     MIN_PERL_VERSION => v5.10,
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => 0,
