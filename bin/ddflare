@@ -1,0 +1,110 @@
+#!/usr/bin/perl
+
+use v5.10;
+
+use warnings FATAL => 'all';
+use strict;
+
+use Readonly;
+use YAML::Any qw( LoadFile );
+use Getopt::Std;
+use Net::DNS::CloudFlare::DDNS;
+
+=head1 NAME
+
+App::DDFlare - A dynamic DNS client for use with CloudFlare
+
+=head1 VERSION
+
+Version 0.03
+
+=head1 SYNOPSIS
+
+To run as a daemon simply execute ddflare
+
+    $ ddflare
+
+The following flags are accepted
+
+    -v     Verbose output
+
+=head1 FUNCTIONS
+
+=cut
+
+our $VERSION = '0.03';
+
+my %OPTS;
+getopts('v', \%OPTS);
+Readonly my $VERBOSE => $OPTS{v};
+
+# It's YAML
+Readonly my $CONFIG_FILE => '/etc/ddflare.conf';
+
+=head2 loadConfig
+    
+    Loads in the configuration file, which is YAML, the structure
+    is an array of hashrefs.
+
+    The first element being { user => ..., key => ... } which are 
+    CloudFlare credentials.
+
+    Subsequent elements are { zone => ..., domains => [ ... ] } 
+    which are cloudflare zones, and the subdomains within them to 
+    update. An undefined value in domains represents the zone itself.
+
+=cut
+
+sub loadConfig {
+    say "Loading config from $CONFIG_FILE" if $VERBOSE;
+    LoadFile($CONFIG_FILE);
+}
+
+# Get cloudflare settings and zone info
+my @conf = loadConfig();
+
+# How long to wait before updates, seconds
+Readonly my $UPDATE_INTERVAL => 1;
+
+Readonly my $updater => Net::DNS::CloudFlare::DDNS->new(
+    user => $conf[0]{user},
+    apikey => $conf[0]{key},
+    zones => [ @conf[1 .. $#conf] ],
+    verbose => $VERBOSE
+);
+
+# We are a daemon
+while(1) {
+    $updater->update;
+    say "Going to sleep for $UPDATE_INTERVAL seconds" if $VERBOSE;
+    # Don't check too often!
+    sleep $UPDATE_INTERVAL;
+}
+
+=head1 AUTHOR
+
+Peter Roberts, C<< <me+ddflare at peter-r.co.uk> >>
+
+=head1 COPYRIGHT/LICENSE
+
+Copyright (c) 2013 Peter Roberts
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+=cut

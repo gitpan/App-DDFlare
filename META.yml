@@ -1,0 +1,27 @@
+--- #YAML:1.0
+name:               App-DDFlare
+version:            0.03
+abstract:           A dynamic DNS client for use with CloudFlare
+author:
+    - Peter Roberts <me+dev@peter-r.co.uk>
+license:            MIT
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    Test::More:  0
+requires:
+    Getopt::Std:          1.06
+    Net::DNS::CloudFlare::DDNS:  0.03
+    perl:                 
+
+    Readonly:             1.03
+    YAML::Any:            0.84
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.57_05
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

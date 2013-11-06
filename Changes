@@ -1,0 +1,11 @@
+Revision history for App-DDFlare
+
+0.03    6/11/13
+        Split into App::DDFlare
+
+0.02    30/10/13
+        Added -v switch
+
+0.01    30/10/13
+       Part of DDFlare
+
