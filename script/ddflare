@@ -9,6 +9,7 @@ use Readonly;
 use YAML::Any qw( LoadFile );
 use Getopt::Std;
 use Net::DNS::CloudFlare::DDNS;
+use App::DDFlare;
 
 =head1 NAME
 
@@ -16,7 +17,7 @@ ddflare - Command line Dynamic DNS client for CloudFlare
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = $App::DDFlare::VERSION;
 
 =head1 SYNOPSIS
 
