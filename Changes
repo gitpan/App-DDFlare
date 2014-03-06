@@ -1,5 +1,8 @@
 Revision history for App-DDFlare
 
+0.07    6/4/14
+        Lower depenency versions
+
 0.06    7/11/13
 	Output version correctly with ddflare --version
 

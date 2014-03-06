@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               App-DDFlare
-version:            0.06
+version:            0.07
 abstract:           Dynamic DNS client for CloudFlare
 author:
     - Peter Roberts <me+dev@peter-r.co.uk>
@@ -16,7 +16,7 @@ requires:
     perl:                 
 
     Readonly:             1.03
-    YAML::Any:            0.84
+    YAML::Any:            0.77
 no_index:
     directory:
         - t

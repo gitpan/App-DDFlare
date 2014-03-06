@@ -21,7 +21,7 @@ WriteMakefile(
     PREREQ_PM => {
 	'Net::DNS::CloudFlare::DDNS' => 0.03,
 	'Readonly' => 1.03,
-	'YAML::Any' => 0.84,
+	'YAML::Any' => 0.77,
 	'Getopt::Std' => 1.06 
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
