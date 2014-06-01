@@ -5,9 +5,10 @@ use v5.10;
 use warnings FATAL => 'all';
 use strict;
 
+use Pod::Usage;
 use Readonly;
 use YAML::Any qw( LoadFile );
-use Getopt::Std;
+use Getopt::Long qw( :config bundling auto_version auto_help );
 use Net::DNS::CloudFlare::DDNS;
 use App::DDFlare;
 
@@ -21,38 +22,70 @@ our $VERSION = $App::DDFlare::VERSION;
 
 =head1 SYNOPSIS
 
-To run as a daemon simply execute ddflare
-
-    $ ddflare
+    $ ddflare path_to_config
 
 The following flags are accepted
 
-    -v     Verbose output
+    --version            Verssion info
+    -?|--help            Usage info
 
-Reads a YAML configuration file from /etc/ddflare.conf
+    -v|--verbose         Verbose output
+    -o|--output=file     Append output to file
+    -e|--error=file      Append error to file
+
+=head1 CONFIG
+
+The configuration file is YAML in the following structure
+
+    --- # Credentials
+    user: cloudflare-user
+    key: cloudflare-api-key
+    --- # Updates dom.com and sub1.dom1.com
+    zone: dom.com
+    domains:
+     -
+     - sub1
+    --- # Updates sub1.dom2.com and sub2.dom2.com
+    zone: dom2.com
+    domains:
+     - sub1
+     - sub2
 
 =head1 FUNCTIONS
 
 =cut
 
-my %OPTS;
-getopts('v', \%OPTS);
-Readonly my $VERBOSE => $OPTS{v};
+GetOptions(\my %OPTS,
+    'verbose|v',
+    'output|o=s',
+    'error|e=s');
+Readonly my $VERBOSE => $OPTS{verbose};
+Readonly my $O_FILE  => $OPTS{output};
+Readonly my $E_FILE  => $OPTS{error};
 
-# It's YAML
-Readonly my $CONFIG_FILE => '/etc/ddflare.conf';
+# Redirect output if needed
+open STDOUT, '>>', $O_FILE
+    or die "Couldn't open $O_FILE for output"
+    if defined $O_FILE;
+open STDERR, '>>', $E_FILE
+    or die "Couldn't open $E_FILE for output"
+    if defined $E_FILE;
+
+die "Invalid arguments"
+    unless @ARGV == 1;
+Readonly my $CONFIG_FILE => shift;
 
 =head2 loadConfig
     
 Loads in the configuration file, which is YAML, the structure
-    is an array of hashrefs.
+is an array of hashrefs.
 
 The first element being { user => ..., key => ... } which are 
-    CloudFlare credentials.
+CloudFlare credentials.
 
-Subsequent elements are { zone => ..., domains => [ ... ] } 
-    which are cloudflare zones, and the subdomains within them to 
-    update. An undefined value in domains represents the zone itself.
+Subsequent elements are { zone => ..., domains => [ ... ] }  which are
+cloudflare zones, and the subdomains within them to update. An
+undefined value in domains represents the zone itself.
 
     loadConfig($PATH_TO_CONFIG);
 
@@ -92,22 +125,23 @@ Peter Roberts, C<< <me+ddflare at peter-r.co.uk> >>
 
 Copyright (c) 2013 Peter Roberts
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 =cut

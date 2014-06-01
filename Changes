@@ -1,5 +1,11 @@
 Revision history for App-DDFlare
 
+0.08    
+        Allow output redirection
+        Add long arguments
+	Made config file an argument
+	Add --help and --version
+
 0.07    6/4/14
         Lower depenency versions
 
