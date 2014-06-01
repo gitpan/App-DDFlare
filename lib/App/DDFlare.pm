@@ -68,7 +68,7 @@ L<http://search.cpan.org/dist/App-DDFlare/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013 Peter Roberts.
+Copyright 2014 Peter Roberts.
 
 This program is distributed under the MIT (X11) License:
 L<http://www.opensource.org/licenses/mit-license.php>

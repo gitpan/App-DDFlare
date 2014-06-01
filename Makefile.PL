@@ -22,7 +22,8 @@ WriteMakefile(
 	'Net::DNS::CloudFlare::DDNS' => 0.03,
 	'Readonly' => 1.03,
 	'YAML::Any' => 0.77,
-	'Getopt::Std' => 1.06 
+	'Getopt::Long' => 2.39,
+	'Pod::Usage' => 1.61
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'App-DDFlare-*' },
